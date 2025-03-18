@@ -1,7 +1,7 @@
 # Automated Reconnaissance Pipeline
 
-![version](https://img.shields.io/github/v/release/epi052/recon-pipeline?style=for-the-badge)
-![Python application](https://img.shields.io/github/workflow/status/epi052/recon-pipeline/recon-pipeline%20build?style=for-the-badge)
+![version](https://img.shields.io/github/v/release/poppopjmp/recon-pipeline?style=for-the-badge)
+![Python application](https://img.shields.io/github/workflow/status/poppopjmp/recon-pipeline/recon-pipeline%20build?style=for-the-badge)
 ![code coverage](https://img.shields.io/badge/coverage-97%25-blue?style=for-the-badge)
 ![python](https://img.shields.io/badge/python-3.7-informational?style=for-the-badge)
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)
