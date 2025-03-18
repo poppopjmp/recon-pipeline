@@ -11,6 +11,7 @@ Getting Started
     viewing_results
     scheduler
     visualization
+    design
 
 
 .. include:: summary.rst
