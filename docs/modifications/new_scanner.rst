@@ -85,3 +85,25 @@ Add Your Scan to a Wrapper (optional)
 
 If you want to run your new scan as part of an existing pipeline, open up ``pipeline.recon.wrappers`` and edit one of the existing wrappers (or add your own) to include your new scan.  You should be able to import your new scan, and then add a ``yield MyNewScan(**args)`` in order to add it to the pipeline.  The only gotcha here is that depending on what arguments your scan takes, you may need to strategically place your scan within the wrapper in order to ensure it doesn't get any arguments that it doesn't expect.
 
+Guidelines for Maintaining and Extending the Project
+----------------------------------------------------
+
+1. **Code Readability**: Ensure that the code is easy to read and understand by using meaningful variable names, adding comments where necessary, and following the PEP 8 style guide.
+
+2. **Modularity**: Ensure that the code is modular and follows the single responsibility principle. Each function and class should have a single responsibility and should be as small as possible.
+
+3. **Error Handling**: Ensure that the code has proper error handling to handle unexpected situations gracefully. Use try-except blocks to catch exceptions and provide meaningful error messages.
+
+4. **Testing**: Ensure that the code is thoroughly tested using unit tests and integration tests. Use a testing framework such as `pytest` to write and run the tests.
+
+5. **Documentation**: Ensure that the code is well-documented. Add docstrings to all functions and classes, and update the documentation in the `docs` directory to reflect any changes in the codebase.
+
+6. **Performance**: Ensure that the code is optimized for performance. Use efficient algorithms and data structures, and avoid unnecessary computations.
+
+7. **Security**: Ensure that the code follows best practices for security. Avoid using hard-coded credentials, validate user inputs, and use secure communication protocols.
+
+8. **Extensibility**: Ensure that the code is easy to extend. Use design patterns such as the factory pattern and the strategy pattern to make it easy to add new features and functionality.
+
+9. **Consistency**: Ensure that the code is consistent. Follow a consistent coding style and naming conventions throughout the codebase.
+
+10. **Code Reviews**: Ensure that the code is reviewed by other developers before it is merged into the main branch. Use code review tools such as GitHub pull requests to facilitate the code review process.

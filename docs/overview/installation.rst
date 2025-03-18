@@ -131,3 +131,21 @@ To update, you can run the following commands from inside the ``recon-pipeline``
     docker rm recon-pipeline
 
 When complete, execute the inital installation commands again starting with ``docker build``.
+
+Purpose and Usage of Each Tool and Task
+#######################################
+
+The recon-pipeline project integrates various tools and tasks to perform automated reconnaissance. Below is an overview of the purpose and usage of each tool and task in the project:
+
+1. **Amass**: Used for subdomain enumeration. The `AmassScan` task runs the `amass` tool to discover subdomains of a target domain.
+2. **Masscan**: Used for fast port scanning. The `MasscanScan` task runs the `masscan` tool to identify open ports on the target hosts.
+3. **Nmap**: Used for detailed port scanning and service enumeration. The `ThreadedNmapScan` task runs the `nmap` tool to perform detailed scans on the identified open ports.
+4. **Searchsploit**: Used for vulnerability scanning. The `SearchsploitScan` task runs the `searchsploit` tool to identify known vulnerabilities in the services running on the open ports.
+5. **Gobuster**: Used for directory and file brute-forcing on web servers. The `GobusterScan` task runs the `gobuster` tool to identify hidden directories and files on the target web servers.
+6. **Aquatone**: Used for taking screenshots of web pages. The `AquatoneScan` task runs the `aquatone` tool to capture screenshots of the target web pages.
+7. **Waybackurls**: Used for fetching known URLs from the Wayback Machine. The `WaybackurlsScan` task runs the `waybackurls` tool to retrieve historical URLs for the target domains.
+8. **Webanalyze**: Used for identifying web technologies. The `WebanalyzeScan` task runs the `webanalyze` tool to detect the technologies used by the target web servers.
+9. **Subjack**: Used for subdomain takeover detection. The `SubjackScan` task runs the `subjack` tool to identify subdomains that are vulnerable to takeover.
+10. **TKOSubs**: Used for subdomain takeover detection. The `TKOSubsScan` task runs the `tkosubs` tool to identify subdomains that are vulnerable to takeover.
+
+Each task in the recon-pipeline project is defined as a `luigi.Task` or `luigi.ExternalTask` and can have dependencies on other tasks. The tasks are executed in a specific order based on their dependencies, allowing for the definition and execution of complex workflows.
