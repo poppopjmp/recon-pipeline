@@ -3,7 +3,6 @@ from sqlalchemy import Column, Integer, ForeignKey, String, Table, UniqueConstra
 
 from .base_model import Base
 
-
 port_association_table = Table(
     "port_association",
     Base.metadata,
@@ -13,10 +12,10 @@ port_association_table = Table(
 
 
 class Port(Base):
-    """ Database model that describes a port (tcp or udp).
+    """Database model that describes a port (tcp or udp).
 
-        Relationships:
-            ``targets``: many to many -> :class:`pipeline.models.target_model.Target`
+    Relationships:
+        ``targets``: many to many -> :class:`pipeline.models.target_model.Target`
     """
 
     __tablename__ = "port"

@@ -16,7 +16,7 @@ import pipeline.models.db_manager
 
 @inherits(GatherWebTargets)
 class WaybackurlsScan(luigi.Task):
-    """ Fetch known URLs from the Wayback Machine, Common Crawl, and Virus Total for historic data about the target.
+    """Fetch known URLs from the Wayback Machine, Common Crawl, and Virus Total for historic data about the target.
 
     Install:
         .. code-block:: console
@@ -53,7 +53,7 @@ class WaybackurlsScan(luigi.Task):
         self.results_subfolder = Path(self.results_dir) / "waybackurls-results"
 
     def requires(self):
-        """ WaybackurlsScan depends on GatherWebTargets to run.
+        """WaybackurlsScan depends on GatherWebTargets to run.
 
         GatherWebTargets accepts exempt_list and expects rate, target_file, interface,
                          and either ports or top_ports as parameters
@@ -75,7 +75,7 @@ class WaybackurlsScan(luigi.Task):
         return GatherWebTargets(**args)
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Returns:
             luigi.contrib.sqla.SQLAlchemyTarget
@@ -85,7 +85,7 @@ class WaybackurlsScan(luigi.Task):
         )
 
     def run(self):
-        """ Defines the options/arguments sent to waybackurls after processing. """
+        """Defines the options/arguments sent to waybackurls after processing."""
         self.results_subfolder.mkdir(parents=True, exist_ok=True)
 
         command = [tools.get("waybackurls").get("path")]

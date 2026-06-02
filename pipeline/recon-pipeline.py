@@ -23,6 +23,7 @@ sys.path.append(str(Path.home() / ".local" / "bin"))
 import cmd2
 from .styling import style
 
+
 def cluge_package_imports(name, package):
     if name == "__main__" and package is None:
         file = Path(__file__).expanduser().resolve()
@@ -37,6 +38,7 @@ def cluge_package_imports(name, package):
         import pipeline
 
         sys.modules[name].__package__ = "pipeline"
+
 
 cluge_package_imports(name=__name__, package=__package__)
 
@@ -72,13 +74,16 @@ from .recon import (
 
 from .tools import tools
 
+
 class ToolAction(IntEnum):
     INSTALL = 0
     UNINSTALL = 1
 
+
 ToolActions = NewType("ToolActions", ToolAction)
 
 selector = selectors.DefaultSelector()
+
 
 class SelectorThread(threading.Thread):
     def __init__(self, *args, **kwargs):
@@ -98,6 +103,7 @@ class SelectorThread(threading.Thread):
             for k, mask in selector.select():
                 callback = k.data
                 callback(k.fileobj)
+
 
 class ReconShell(cmd2.Cmd):
     def __init__(self, *args, **kwargs):
@@ -626,6 +632,7 @@ class ReconShell(cmd2.Cmd):
         else:
             self.do_help("view")
 
+
 def main(
     name,
     old_tools_dir=Path().home() / ".recon-tools",
@@ -661,5 +668,6 @@ def main(
                 print(style("[=] Please run the install all command to complete setup", fg="bright_blue"))
         rs = ReconShell(persistent_history_file="~/.reconshell_history", persistent_history_length=10000)
         sys.exit(rs.cmdloop())
+
 
 main(name=__name__)

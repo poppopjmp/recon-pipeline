@@ -27,9 +27,7 @@ author = "epi"
 release = "0.7.3"
 rst_epilog = """
 .. |version| replace:: {versionnum}
-""".format(
-    versionnum=release
-)
+""".format(versionnum=release)
 
 master_doc = "index"
 

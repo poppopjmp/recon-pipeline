@@ -21,7 +21,7 @@ from ..helpers import get_ip_address_version, is_ip_address
 
 @inherits(GatherWebTargets)
 class WebanalyzeScan(luigi.Task):
-    """ Use webanalyze to determine the technology stack on the given target(s).
+    """Use webanalyze to determine the technology stack on the given target(s).
 
     Install:
         .. code-block:: console
@@ -63,7 +63,7 @@ class WebanalyzeScan(luigi.Task):
         self.results_subfolder = Path(self.results_dir) / "webanalyze-results"
 
     def requires(self):
-        """ WebanalyzeScan depends on GatherWebTargets to run.
+        """WebanalyzeScan depends on GatherWebTargets to run.
 
         GatherWebTargets accepts exempt_list and expects rate, target_file, interface,
                          and either ports or top_ports as parameters
@@ -85,7 +85,7 @@ class WebanalyzeScan(luigi.Task):
         return GatherWebTargets(**args)
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Returns:
             luigi.contrib.sqla.SQLAlchemyTarget
@@ -95,14 +95,14 @@ class WebanalyzeScan(luigi.Task):
         )
 
     def parse_results(self):
-        """ Reads in the webanalyze's .csv files and updates the associated Target record. """
+        """Reads in the webanalyze's .csv files and updates the associated Target record."""
 
         for entry in self.results_subfolder.glob("webanalyze*.csv"):
-            """ example data
+            """example data
 
-                http://13.57.162.100,Font scripts,Google Font API,
-                http://13.57.162.100,"Web servers,Reverse proxies",Nginx,1.16.1
-                http://13.57.162.100,Font scripts,Font Awesome,
+            http://13.57.162.100,Font scripts,Google Font API,
+            http://13.57.162.100,"Web servers,Reverse proxies",Nginx,1.16.1
+            http://13.57.162.100,Font scripts,Font Awesome,
             """
             with open(entry, newline="") as f:
                 reader = csv.reader(f)
@@ -141,7 +141,7 @@ class WebanalyzeScan(luigi.Task):
             subprocess.run(cmd, stdout=f)
 
     def run(self):
-        """ Defines the options/arguments sent to webanalyze after processing.
+        """Defines the options/arguments sent to webanalyze after processing.
 
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run

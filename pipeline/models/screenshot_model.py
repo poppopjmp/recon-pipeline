@@ -3,7 +3,6 @@ from sqlalchemy import Column, Integer, ForeignKey, LargeBinary, Table, String
 
 from .base_model import Base
 
-
 screenshot_association_table = Table(
     "screenshot_association",
     Base.metadata,
@@ -13,18 +12,18 @@ screenshot_association_table = Table(
 
 
 class Screenshot(Base):
-    """ Database model that describes a screenshot of a given webpage hosted on a ``Target``.
+    """Database model that describes a screenshot of a given webpage hosted on a ``Target``.
 
-        Represents aquatone data.
+    Represents aquatone data.
 
-        Relationships:
-            ``port``: one to one -> :class:`pipeline.models.port_model.Port`
+    Relationships:
+        ``port``: one to one -> :class:`pipeline.models.port_model.Port`
 
-            ``target``: many to one -> :class:`pipeline.models.target_model.Target`
+        ``target``: many to one -> :class:`pipeline.models.target_model.Target`
 
-            ``endpoint``: one to one -> :class:`pipeline.models.endpoint_model.Endpoint`
+        ``endpoint``: one to one -> :class:`pipeline.models.endpoint_model.Endpoint`
 
-            ``similar_pages``: black magic -> :class:`pipeline.models.screenshot_model.Screenshot`
+        ``similar_pages``: black magic -> :class:`pipeline.models.screenshot_model.Screenshot`
     """
 
     __tablename__ = "screenshot"

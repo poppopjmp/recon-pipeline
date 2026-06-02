@@ -15,7 +15,7 @@ from ..models.target_model import Target
 
 @inherits(TargetList)
 class AmassScan(luigi.Task):
-    """ Run ``amass`` scan to perform subdomain enumeration of given domain(s).
+    """Run ``amass`` scan to perform subdomain enumeration of given domain(s).
 
     Note:
         Expects **TARGET_FILE.domains** file to be a text file with one top-level domain per line.
@@ -52,7 +52,7 @@ class AmassScan(luigi.Task):
         self.results_subfolder = (Path(self.results_dir) / "amass-results").expanduser().resolve()
 
     def requires(self):
-        """ AmassScan depends on TargetList to run.
+        """AmassScan depends on TargetList to run.
 
         TargetList expects target_file as a parameter.
 
@@ -64,7 +64,7 @@ class AmassScan(luigi.Task):
         return TargetList(**args)
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Naming convention for the output file is amass.json.
 
@@ -78,7 +78,7 @@ class AmassScan(luigi.Task):
         return luigi.LocalTarget(new_path.expanduser().resolve())
 
     def run(self):
-        """ Defines the options/arguments sent to amass after processing.
+        """Defines the options/arguments sent to amass after processing.
 
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
@@ -121,7 +121,7 @@ class AmassScan(luigi.Task):
 
 @inherits(AmassScan)
 class ParseAmassOutput(luigi.Task):
-    """ Read amass JSON results and create categorized entries into ip|subdomain files.
+    """Read amass JSON results and create categorized entries into ip|subdomain files.
 
     Args:
         db_location: specifies the path to the database used for storing results *Required by upstream Task*
@@ -136,7 +136,7 @@ class ParseAmassOutput(luigi.Task):
         self.results_subfolder = (Path(self.results_dir) / "amass-results").expanduser().resolve()
 
     def requires(self):
-        """ ParseAmassOutput depends on AmassScan to run.
+        """ParseAmassOutput depends on AmassScan to run.
 
         TargetList expects target_file as a parameter.
         AmassScan accepts exempt_list as an optional parameter.
@@ -154,7 +154,7 @@ class ParseAmassOutput(luigi.Task):
         return AmassScan(**args)
 
     def output(self):
-        """ Returns the target output files for this task.
+        """Returns the target output files for this task.
 
         Returns:
             luigi.contrib.sqla.SQLAlchemyTarget
@@ -164,7 +164,7 @@ class ParseAmassOutput(luigi.Task):
         )
 
     def run(self):
-        """ Parse the json file produced by AmassScan and categorize the results into ip|subdomain files.
+        """Parse the json file produced by AmassScan and categorize the results into ip|subdomain files.
 
         An example (prettified) entry from the json file is shown below
             {

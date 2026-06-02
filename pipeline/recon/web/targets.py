@@ -10,7 +10,7 @@ from ..masscan import ParseMasscanOutput
 
 @inherits(ParseMasscanOutput)
 class GatherWebTargets(luigi.Task):
-    """ Gather all subdomains as well as any ip addresses known to have a configured web port open.
+    """Gather all subdomains as well as any ip addresses known to have a configured web port open.
 
     Args:
         db_location: specifies the path to the database used for storing results *Required by upstream Task*
@@ -28,7 +28,7 @@ class GatherWebTargets(luigi.Task):
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
 
     def requires(self):
-        """ GatherWebTargets depends on ParseMasscanOutput and ParseAmassOutput to run.
+        """GatherWebTargets depends on ParseMasscanOutput and ParseAmassOutput to run.
 
         ParseMasscanOutput expects rate, target_file, interface, and either ports or top_ports as parameters.
         ParseAmassOutput accepts exempt_list and expects target_file
@@ -56,7 +56,7 @@ class GatherWebTargets(luigi.Task):
         }
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Returns:
             luigi.contrib.sqla.SQLAlchemyTarget
@@ -66,7 +66,7 @@ class GatherWebTargets(luigi.Task):
         )
 
     def run(self):
-        """ Gather all potential web targets and tag them as web in the database. """
+        """Gather all potential web targets and tag them as web in the database."""
 
         for target in self.db_mgr.get_all_targets():
             ports = self.db_mgr.get_ports_by_ip_or_host_and_protocol(target, "tcp")

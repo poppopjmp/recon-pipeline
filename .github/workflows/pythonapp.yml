@@ -1,129 +1,45 @@
 name: recon-pipeline build
 
-on: [push]
+on:
+  push:
+  pull_request:
 
 jobs:
   lint:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Set up pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install -d
-    - name: Lint with flake8
-      run: |
-        pipenv install flake8
-        # stop the build if there are Python syntax errors or undefined names
-        pipenv run flake8 . --count
-    - name: Check code formatting with black
-      run: |
-        pipenv install "black==19.10b0"
-        pipenv run black -l 120 --check . 
-
-  test-shell:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Set up pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install -d
-    - name: Test with pytest
-      run: |
-        pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-        pipenv run python -m pytest tests/test_shell
-
-  test-recon:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Set up pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install -d
-    - name: Test with pytest
-      run: |
-        pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-        pipenv run python -m pytest tests/test_recon
-
-  test-web:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Set up pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install -d
-    - name: Test with pytest
-      run: |
-        pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-        pipenv run python -m pytest tests/test_web
-
-  test-models:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v1
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.7
-      - name: Set up pipenv
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pipenv
-          pipenv install -d
-      - name: Test with pytest
-        run: |
-          pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-          pipenv run python -m pytest tests/test_models
+          pip install -e ".[dev]"
+      - name: Lint with flake8
+        run: flake8 . --count
+      - name: Check formatting with black
+        run: black -l 120 --check .
 
-  test-unmocked-tool-installs:
-
+  test:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        suite: [test_models, test_recon, test_web, test_shell]
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Set up pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install -d
-    - name: Test with pytest
-      run: |
-        pipenv install pytest cmd2 luigi sqlalchemy python-libnmap
-        pipenv run python -m pytest -vv --show-capture=all tests/test_tools_install
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Test ${{ matrix.suite }}
+        run: python -m pytest tests/${{ matrix.suite }}

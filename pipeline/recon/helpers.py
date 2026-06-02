@@ -12,7 +12,7 @@ from ..tools import tools
 
 
 def meets_requirements(requirements, exception):
-    """ Determine if tools required to perform task are installed. """
+    """Determine if tools required to perform task are installed."""
     for tool in requirements:
         if not tools.get(tool).get("installed"):
             if exception:
@@ -26,7 +26,7 @@ def meets_requirements(requirements, exception):
 
 
 def get_scans():
-    """ Iterates over the recon package and its modules to find all of the classes that end in [Ss]can.
+    """Iterates over the recon package and its modules to find all of the classes that end in [Ss]can.
 
     **A contract exists here that says any scans need to end with the word scan in order to be found by this function.**
 
@@ -80,7 +80,7 @@ def get_scans():
 
 
 def is_ip_address(ipaddr):
-    """ Simple helper to determine if given string is an ip address or subnet """
+    """Simple helper to determine if given string is an ip address or subnet"""
     try:
         ipaddress.ip_interface(ipaddr)
         return True
@@ -89,7 +89,7 @@ def is_ip_address(ipaddr):
 
 
 def get_ip_address_version(ipaddr):
-    """ Simple helper to determine whether a given ip address is ipv4 or ipv6 """
+    """Simple helper to determine whether a given ip address is ipv4 or ipv6"""
     if is_ip_address(ipaddr):
         if isinstance(ipaddress.ip_address(ipaddr), ipaddress.IPv4Address):  # ipv4 addr
             return "4"

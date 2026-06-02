@@ -424,15 +424,14 @@ class TestReconShell:
         attrs = {"communicate.return_value": (b"output", b"error"), "returncode": 0}
         process_mock.configure_mock(**attrs)
 
-        with patch("subprocess.run", autospec=True) as mocked_run, patch(
-            "subprocess.Popen", autospec=True
-        ) as mocked_popen, patch("webbrowser.open", autospec=True) as mocked_web, patch(
-            "selectors.DefaultSelector.register", autospec=True
-        ) as mocked_selector, patch(
-            "cmd2.Cmd.select"
-        ) as mocked_select, patch.object(
-            recon_shell, "get_scans"
-        ) as mocked_scans:
+        with (
+            patch("subprocess.run", autospec=True) as mocked_run,
+            patch("subprocess.Popen", autospec=True) as mocked_popen,
+            patch("webbrowser.open", autospec=True) as mocked_web,
+            patch("selectors.DefaultSelector.register", autospec=True) as mocked_selector,
+            patch("cmd2.Cmd.select") as mocked_select,
+            patch.object(recon_shell, "get_scans") as mocked_scans,
+        ):
 
             mocked_select.return_value = "Resume"
             mocked_run.return_value = process_mock
@@ -463,9 +462,11 @@ class TestReconShell:
         # autospec so the mocks are spec'd to the real methods; otherwise cmd2's
         # init-time subcommand introspection treats a bare MagicMock (which
         # answers hasattr() for anything) as a subcommand and raises.
-        with patch("cmd2.Cmd.cmdloop", autospec=True) as mocked_loop, patch("sys.exit"), patch(
-            "cmd2.Cmd.select", autospec=True
-        ) as mocked_select:
+        with (
+            patch("cmd2.Cmd.cmdloop", autospec=True) as mocked_loop,
+            patch("sys.exit"),
+            patch("cmd2.Cmd.select", autospec=True) as mocked_select,
+        ):
             mocked_select.return_value = "No"
             recon_shell.main(name="__main__")
             assert mocked_loop.called

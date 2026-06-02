@@ -20,7 +20,7 @@ from ..styling import style
 
 
 class DBManager:
-    """ Class that encapsulates database transactions and queries """
+    """Class that encapsulates database transactions and queries"""
 
     def __init__(self, db_location):
         self.location = Path(db_location).expanduser().resolve()
@@ -31,7 +31,7 @@ class DBManager:
         self.session = session_factory()
 
     def get_or_create(self, model, **kwargs):
-        """ Simple helper to either get an existing record if it exists otherwise create and return a new instance """
+        """Simple helper to either get an existing record if it exists otherwise create and return a new instance"""
         instance = self.session.query(model).filter_by(**kwargs).first()
         if instance:
             return instance
@@ -41,7 +41,7 @@ class DBManager:
             return instance
 
     def add(self, item):
-        """ Simple helper to add a record to the database """
+        """Simple helper to add a record to the database"""
         try:
             self.session.add(item)
             self.session.commit()
@@ -50,7 +50,7 @@ class DBManager:
             self.session.rollback()
 
     def get_or_create_target_by_ip_or_hostname(self, ip_or_host):
-        """ Simple helper to query a Target record by either hostname or ip address, whichever works """
+        """Simple helper to query a Target record by either hostname or ip address, whichever works"""
         # get existing instance
         instance = (
             self.session.query(Target)
@@ -81,41 +81,41 @@ class DBManager:
             return tgt
 
     def get_all_hostnames(self) -> list:
-        """ Simple helper to return all hostnames from Target records """
+        """Simple helper to return all hostnames from Target records"""
         return [x[0] for x in self.session.query(Target.hostname).filter(Target.hostname != None)]  # noqa: E711
 
     def get_all_ipv4_addresses(self) -> list:
-        """ Simple helper to return all ipv4 addresses from Target records """
+        """Simple helper to return all ipv4 addresses from Target records"""
         query = self.session.query(IPAddress.ipv4_address).filter(IPAddress.ipv4_address != None)  # noqa: E711
         return [x[0] for x in query]
 
     def get_all_ipv6_addresses(self) -> list:
-        """ Simple helper to return all ipv6 addresses from Target records """
+        """Simple helper to return all ipv6 addresses from Target records"""
         query = self.session.query(IPAddress.ipv6_address).filter(IPAddress.ipv6_address != None)  # noqa: E711
         return [x[0] for x in query]
 
     def close(self):
-        """ Simple helper to close the database session """
+        """Simple helper to close the database session"""
         self.session.close()
 
     def get_all_targets(self):
-        """ Simple helper to return all ipv4/6 and hostnames produced by running amass """
+        """Simple helper to return all ipv4/6 and hostnames produced by running amass"""
         return self.get_all_hostnames() + self.get_all_ipv4_addresses() + self.get_all_ipv6_addresses()
 
     def get_all_endpoints(self):
-        """ Simple helper that returns all Endpoints from the database """
+        """Simple helper that returns all Endpoints from the database"""
         return self.session.query(Endpoint).all()
 
     def get_all_port_numbers(self):
-        """ Simple helper that returns all Port.port_numbers from the database """
+        """Simple helper that returns all Port.port_numbers from the database"""
         return set(str(x[0]) for x in self.session.query(Port.port_number).all())
 
     def get_endpoint_by_status_code(self, code):
-        """ Simple helper that returns all Endpoints filtered by status code """
+        """Simple helper that returns all Endpoints filtered by status code"""
         return self.session.query(Endpoint).filter(Endpoint.status_code == code).all()
 
     def get_endpoints_by_ip_or_hostname(self, ip_or_host):
-        """ Simple helper that returns all Endpoints filtered by ip or hostname """
+        """Simple helper that returns all Endpoints filtered by ip or hostname"""
         endpoints = list()
 
         tmp_endpoints = self.session.query(Endpoint).filter(Endpoint.url.contains(ip_or_host)).all()
@@ -128,7 +128,7 @@ class DBManager:
         return endpoints
 
     def get_nmap_scans_by_ip_or_hostname(self, ip_or_host):
-        """ Simple helper that returns all Endpoints filtered by ip or hostname """
+        """Simple helper that returns all Endpoints filtered by ip or hostname"""
         scans = list()
 
         for result in self.session.query(NmapResult).filter(NmapResult.commandline.contains(ip_or_host)).all():
@@ -138,27 +138,27 @@ class DBManager:
         return scans
 
     def get_status_codes(self):
-        """ Simple helper that returns all status codes found during scanning """
+        """Simple helper that returns all status codes found during scanning"""
         return set(str(x[0]) for x in self.session.query(Endpoint.status_code).all() if x[0] is not None)
 
     def get_and_filter(self, model, defaults=None, **kwargs):
-        """ Simple helper to either get an existing record if it exists otherwise create and return a new instance """
+        """Simple helper to either get an existing record if it exists otherwise create and return a new instance"""
         return self.session.query(model).filter_by(**kwargs).all()
 
     def get_all_nse_script_types(self):
-        """ Simple helper that returns all NSE Script types from the database """
+        """Simple helper that returns all NSE Script types from the database"""
         return set(str(x[0]) for x in self.session.query(NSEResult.script_id).all())
 
     def get_all_nmap_reported_products(self):
-        """ Simple helper that returns all products reported by nmap """
+        """Simple helper that returns all products reported by nmap"""
         return set(str(x[0]) for x in self.session.query(NmapResult.product).all())
 
     def get_all_exploit_types(self):
-        """ Simple helper that returns all exploit types reported by searchsploit """
+        """Simple helper that returns all exploit types reported by searchsploit"""
         return set(str(x[0]) for x in self.session.query(SearchsploitResult.type).all())
 
     def add_ipv4_or_v6_address_to_target(self, tgt, ipaddr):
-        """ Simple helper that adds an appropriate IPAddress to the given target """
+        """Simple helper that adds an appropriate IPAddress to the given target"""
         if not is_ip_address(ipaddr):
             return
 
@@ -172,7 +172,7 @@ class DBManager:
         return tgt
 
     def get_all_web_targets(self):
-        """ Simple helper that returns all Targets tagged as having an open web port """
+        """Simple helper that returns all Targets tagged as having an open web port"""
         # return set(str(x[0]) for x in self.session.query(Target).all())
         web_targets = list()
         targets = self.get_and_filter(Target, is_web=True)
@@ -189,7 +189,7 @@ class DBManager:
         return web_targets
 
     def get_ports_by_ip_or_host_and_protocol(self, ip_or_host, protocol):
-        """ Simple helper that returns all ports based on the given protocol and host """
+        """Simple helper that returns all ports based on the given protocol and host"""
         tgt = self.get_or_create_target_by_ip_or_hostname(ip_or_host)
         ports = list()
 

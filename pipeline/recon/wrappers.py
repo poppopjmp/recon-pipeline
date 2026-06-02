@@ -8,7 +8,7 @@ from .web import AquatoneScan, GobusterScan, SubjackScan, TKOSubsScan, Waybackur
 
 @inherits(SearchsploitScan, AquatoneScan, TKOSubsScan, SubjackScan, GobusterScan, WebanalyzeScan)
 class FullScan(luigi.WrapperTask):
-    """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time.
+    """Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time.
 
     Note:
         Because FullScan is a wrapper, it requires all Parameters for any of the Scans that it wraps.
@@ -44,7 +44,7 @@ class FullScan(luigi.WrapperTask):
     exception = True
 
     def requires(self):
-        """ FullScan is a wrapper, as such it requires any Tasks that it wraps. """
+        """FullScan is a wrapper, as such it requires any Tasks that it wraps."""
         meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,
@@ -87,7 +87,7 @@ class FullScan(luigi.WrapperTask):
 
 @inherits(SearchsploitScan, AquatoneScan, GobusterScan, WebanalyzeScan)
 class HTBScan(luigi.WrapperTask):
-    """ Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time.
+    """Wraps multiple scan types in order to run tasks on the same hierarchical level at the same time.
 
     Note:
         Because HTBScan is a wrapper, it requires all Parameters for any of the Scans that it wraps.
@@ -111,7 +111,7 @@ class HTBScan(luigi.WrapperTask):
     exception = True
 
     def requires(self):
-        """ HTBScan is a wrapper, as such it requires any Tasks that it wraps. """
+        """HTBScan is a wrapper, as such it requires any Tasks that it wraps."""
         meets_requirements(self.requirements, self.exception)
         args = {
             "results_dir": self.results_dir,

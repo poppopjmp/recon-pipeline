@@ -8,12 +8,12 @@ from .base_model import Base
 
 
 class SearchsploitResult(Base):
-    """ Database model that describes results from running searchsploit --nmap TARGET.xml.
+    """Database model that describes results from running searchsploit --nmap TARGET.xml.
 
-        Represents searchsploit data.
+    Represents searchsploit data.
 
-        Relationships:
-            ``target``: many to one -> :class:`pipeline.models.target_model.Target`
+    Relationships:
+        ``target``: many to one -> :class:`pipeline.models.target_model.Target`
     """
 
     __tablename__ = "searchsploit_result"

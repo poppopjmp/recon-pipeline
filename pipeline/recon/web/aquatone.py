@@ -22,7 +22,7 @@ from ...models.screenshot_model import Screenshot
 
 @inherits(GatherWebTargets)
 class AquatoneScan(luigi.Task):
-    """ Screenshot all web targets and generate HTML report.
+    """Screenshot all web targets and generate HTML report.
 
     Install:
         .. code-block:: console
@@ -67,7 +67,7 @@ class AquatoneScan(luigi.Task):
         self.results_subfolder = Path(self.results_dir) / "aquatone-results"
 
     def requires(self):
-        """ AquatoneScan depends on GatherWebTargets to run.
+        """AquatoneScan depends on GatherWebTargets to run.
 
         GatherWebTargets accepts exempt_list and expects rate, target_file, interface,
                          and either ports or top_ports as parameters
@@ -89,7 +89,7 @@ class AquatoneScan(luigi.Task):
         return GatherWebTargets(**args)
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Returns:
             luigi.contrib.sqla.SQLAlchemyTarget
@@ -117,7 +117,7 @@ class AquatoneScan(luigi.Task):
         return similar_pages
 
     def parse_results(self):
-        """ Read in aquatone's .json file and update the associated Target record """
+        """Read in aquatone's .json file and update the associated Target record"""
 
         """ Example data
 
@@ -245,7 +245,7 @@ class AquatoneScan(luigi.Task):
         self.db_mgr.close()
 
     def run(self):
-        """ Defines the options/arguments sent to aquatone after processing.
+        """Defines the options/arguments sent to aquatone after processing.
 
         cat webtargets.tesla.txt | /opt/aquatone -scan-timeout 900 -threads 20
 

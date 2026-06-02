@@ -40,9 +40,11 @@ class TestWebanalyzeScan:
         assert self.scan.output().exists()
 
     def test_scan_run(self):
-        with patch("concurrent.futures.ThreadPoolExecutor.map") as mocked_map, patch(
-            "subprocess.run"
-        ) as mocked_run, patch("pathlib.Path.cwd", return_value="/"):
+        with (
+            patch("concurrent.futures.ThreadPoolExecutor.map") as mocked_map,
+            patch("subprocess.run") as mocked_run,
+            patch("pathlib.Path.cwd", return_value="/"),
+        ):
             self.scan.parse_results = MagicMock()
             self.scan.db_mgr.get_all_web_targets = MagicMock()
             self.scan.db_mgr.get_all_web_targets.return_value = [
