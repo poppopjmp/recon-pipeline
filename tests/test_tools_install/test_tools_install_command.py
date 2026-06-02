@@ -106,13 +106,13 @@ class TestUnmockedToolsInstall:
 
     def test_install_amass(self):
         tool = "amass"
-        url = "github.com/OWASP/Amass/v3/..."
+        url = "github.com/owasp-amass/amass/v4/...@master"
         tools_copy = tools.copy()
         tool_path = f"{self.shell.tools_dir}/mygo/bin/amass"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} install -v {url}"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
         self.perform_add_remove(tools_copy, tool, True, False)
@@ -160,7 +160,7 @@ class TestUnmockedToolsInstall:
         tools_copy.get(tool)["dependencies"] = [dependency]
         tools_copy.get(tool).get("install_commands")[
             0
-        ] = f"{tools_copy.get(dependency).get('path')} get github.com/OJ/gobuster"
+        ] = f"{tools_copy.get(dependency).get('path')} install github.com/OJ/gobuster/v3@latest"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
         self.perform_add_remove(tools_copy, tool, True, False)
