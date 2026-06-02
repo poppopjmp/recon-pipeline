@@ -12,8 +12,8 @@ project on modern Python and current dependencies; the original tool was built
 for Python 3.7 and a 2019-era dependency stack that no longer installs.
 
 ### Changed
-- **Supported Python is now 3.9+** (previously 3.7, EOL since June 2023). CI
-  runs a 3.9–3.13 matrix.
+- **Supported Python is now 3.10+** (previously 3.7, EOL since June 2023).
+  CI runs a 3.10–3.13 matrix.
 - **Dependencies modernized:** luigi 3.x, cmd2 2.x, SQLAlchemy 1.4. SQLAlchemy
   is pinned to the 1.4 series because `luigi.contrib.sqla` is not yet
   compatible with SQLAlchemy 2.0.

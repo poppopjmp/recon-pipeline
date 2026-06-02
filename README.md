@@ -2,10 +2,10 @@
 
 ![version](https://img.shields.io/github/v/release/poppopjmp/recon-pipeline?style=for-the-badge)
 ![Python application](https://img.shields.io/github/actions/workflow/status/poppopjmp/recon-pipeline/pythonapp.yml?style=for-the-badge)
-![python](https://img.shields.io/badge/python-3.9%2B-informational?style=for-the-badge)
+![python](https://img.shields.io/badge/python-3.10%2B-informational?style=for-the-badge)
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)
 
-> This is a maintained fork of [epi052/recon-pipeline](https://github.com/epi052/recon-pipeline), updated to run on modern Python (3.9+) with current dependencies (luigi 3.x, cmd2 2.x, SQLAlchemy 1.4).
+> This is a maintained fork of [epi052/recon-pipeline](https://github.com/epi052/recon-pipeline), updated to run on modern Python (3.10+) with current dependencies (luigi 3.x, cmd2 2.x, SQLAlchemy 1.4).
 
 There are an [accompanying set of blog posts](https://epi052.gitlab.io/notes-to-self/blog/2019-09-01-how-to-build-an-automated-recon-pipeline-with-python-and-luigi/) detailing the development process and underpinnings of the pipeline.  Feel free to check them out if you're so inclined, but they're in no way required reading to use the tool.
 
@@ -33,7 +33,7 @@ There are two primary phases for installation:
 1. prior to the python dependencies being installed
 2. everything else
 
-### Recommended: pip (Python 3.9+)
+### Recommended: pip (Python 3.10+)
 
 ```bash
 git clone https://github.com/poppopjmp/recon-pipeline.git

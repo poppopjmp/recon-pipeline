@@ -220,9 +220,9 @@ Test coverage can be checked using `coverage`:
 ```sh
 coverage run --source=pipeline -m pytest  tests/test_recon/ tests/test_shell/ tests/test_web/ tests/test_models && coverage report -m
 =====================================================================================================================================
-platform linux -- Python 3.7.5, pytest-5.4.1, py-1.8.1, pluggy-0.13.1
-rootdir: /home/epi/PycharmProjects/recon-pipeline, inifile: pytest.ini
-collected 225 items
+platform linux -- Python 3.11.x, pytest-8.x, pluggy-1.x
+rootdir: /home/you/recon-pipeline, configfile: pyproject.toml
+collected 233 items
 
 tests/test_recon/test_amass.py .........                                                                                                                                                               [  4%]
 tests/test_recon/test_config.py ...........                                                                                                                                                            [  8%]

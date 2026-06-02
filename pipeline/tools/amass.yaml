@@ -3,8 +3,14 @@ go: &gotool !get_tool_path "{go[path]}"
 path: &path !join_path [!get_default "{gopath}", "bin/amass"]
 environ: {"GO111MODULE": "on", "GOPATH": !get_default "{gopath}"}
 
+# NOTE: amass v3 is what AmassScan.run() (in pipeline/recon/amass.py) and
+# ParseAmassOutput are written against -- they use v3's `enum -ip -brute -df`
+# flags and parse v3's JSON schema.  A full move to amass v4 requires updating
+# the installer, the run() flags, and the JSON parser together, and verifying
+# end-to-end against a real v4 binary.  Until that's done, the installer stays
+# on v3 so install/run/parse remain consistent.
 install_commands:
-- !join [*gotool, install -v github.com/owasp-amass/amass/v4/...@master]
+- !join [*gotool, install -v github.com/OWASP/Amass/v3/...@master]
 
 uninstall_commands:
 - !join [rm, *path]

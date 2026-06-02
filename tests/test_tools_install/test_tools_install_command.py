@@ -106,7 +106,7 @@ class TestUnmockedToolsInstall:
 
     def test_install_amass(self):
         tool = "amass"
-        url = "github.com/owasp-amass/amass/v4/...@master"
+        url = "github.com/OWASP/Amass/v3/...@master"
         tools_copy = tools.copy()
         tool_path = f"{self.shell.tools_dir}/mygo/bin/amass"
 

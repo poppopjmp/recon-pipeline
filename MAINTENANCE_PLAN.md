@@ -11,21 +11,30 @@
 The revival described below has been carried out on the
 `claude/project-maintenance-plan-uX4gp` branch:
 
-- **P0 Triage** — ✅ Target stack chosen (Python ≥3.9; luigi 3.x, cmd2 2.x,
+- **P0 Triage** — ✅ Target stack chosen (Python ≥3.10; luigi 3.x, cmd2 2.x,
   SQLAlchemy 1.4) and breakage reproduced.
 - **P1 Modern-Python install** — ✅ Code migrated; installs cleanly via
-  `pip install -e .[dev]` on Python 3.9–3.13. **Full mocked suite: 233 passed,
+  `pip install -e .[dev]` on Python 3.10–3.13. **Full mocked suite: 233 passed,
   1 skipped.**
 - **P2 CI & tooling** — ✅ Workflow rewritten (checkout@v4/setup-python@v5,
-  3.9–3.13 matrix, installs from pyproject, flake8 + black gates); live
+  3.10–3.13 matrix, installs from pyproject, flake8 + black gates); live
   tool-install tests split into a scheduled workflow; pre-commit fixed; black 24
   applied.
 - **P3 Docker** — ✅ Rebuilt on `python:3.12-slim`; install-from-pyproject step
   verified (Docker daemon unavailable here for a full image build).
 - **P4 Rebrand & docs** — ✅ README badges/URLs, CONTRIBUTING, PR template, and
   docs updated; broken design-doc images fixed; `.readthedocs.yml` added.
-- **P5 Tool installers** — ✅ Amass v3→v4 and `go get`→`go install …@latest`.
-  ⚠️ Residual: subjack/tko-subs runtime data-file paths need live verification.
+- **P5 Tool installers** — ✅ `go get`→`go install …@latest` for the Go-based
+  tools (Go 1.17+ removed `go get` for binaries). ⚠️ Residual follow-ups
+  (require a live Go toolchain + network to verify, hence the scheduled
+  tool-installs workflow):
+  - **amass**: deliberately left on v3 — `AmassScan.run()` and
+    `ParseAmassOutput` are written against amass v3's CLI flags and JSON
+    schema. A move to v4 must update the installer, the run() flags, and the
+    parser together and be verified end-to-end against a real v4 binary.
+  - **subjack/tko-subs**: their data files (fingerprints.json /
+    providers-data.csv) were read from `$GOPATH/src`, which `go install` no
+    longer populates; those runtime paths need revisiting.
 - **P6 Release & automation** — ✅ PEP 621 packaging + console entry point,
   CHANGELOG, SECURITY.md, and Dependabot added. Tagging `v1.0.0` and enabling
   branch protection remain for the maintainer.
