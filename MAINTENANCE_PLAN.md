@@ -1,8 +1,34 @@
 # recon-pipeline — Maintenance Revival Plan
 
-**Status of this document:** proposed plan, pending maintainer sign-off.
+**Status of this document:** executed — see the Progress section below.
 **Repository:** `poppopjmp/recon-pipeline` (a fork of `epi052/recon-pipeline`).
 **Prepared:** 2026-06.
+
+---
+
+## Progress (executed)
+
+The revival described below has been carried out on the
+`claude/project-maintenance-plan-uX4gp` branch:
+
+- **P0 Triage** — ✅ Target stack chosen (Python ≥3.9; luigi 3.x, cmd2 2.x,
+  SQLAlchemy 1.4) and breakage reproduced.
+- **P1 Modern-Python install** — ✅ Code migrated; installs cleanly via
+  `pip install -e .[dev]` on Python 3.9–3.13. **Full mocked suite: 233 passed,
+  1 skipped.**
+- **P2 CI & tooling** — ✅ Workflow rewritten (checkout@v4/setup-python@v5,
+  3.9–3.13 matrix, installs from pyproject, flake8 + black gates); live
+  tool-install tests split into a scheduled workflow; pre-commit fixed; black 24
+  applied.
+- **P3 Docker** — ✅ Rebuilt on `python:3.12-slim`; install-from-pyproject step
+  verified (Docker daemon unavailable here for a full image build).
+- **P4 Rebrand & docs** — ✅ README badges/URLs, CONTRIBUTING, PR template, and
+  docs updated; broken design-doc images fixed; `.readthedocs.yml` added.
+- **P5 Tool installers** — ✅ Amass v3→v4 and `go get`→`go install …@latest`.
+  ⚠️ Residual: subjack/tko-subs runtime data-file paths need live verification.
+- **P6 Release & automation** — ✅ PEP 621 packaging + console entry point,
+  CHANGELOG, SECURITY.md, and Dependabot added. Tagging `v1.0.0` and enabling
+  branch protection remain for the maintainer.
 
 ---
 

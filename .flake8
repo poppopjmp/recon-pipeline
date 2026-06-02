@@ -1,4 +1,5 @@
 [flake8]
+extend-exclude = build,dist,.venv,venv,*.egg-info,docs/_build
 max-line-length = 120
 select = C,E,F,W,B,B950
 ignore = E203, E501, W503
