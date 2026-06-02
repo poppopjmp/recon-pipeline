@@ -1,4 +1,4 @@
-from sqlalchemy.orm import relationship, relation
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, ForeignKey, LargeBinary, Table, String
 
 from .base_model import Base
@@ -40,7 +40,7 @@ class Screenshot(Base):
     endpoint = relationship("Endpoint")
     endpoint_id = Column(Integer, ForeignKey("endpoint.id"))
 
-    similar_pages = relation(
+    similar_pages = relationship(
         "Screenshot",
         secondary=screenshot_association_table,
         primaryjoin=screenshot_association_table.c.screenshot_id == id,

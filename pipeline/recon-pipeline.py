@@ -21,7 +21,7 @@ os.environ["PIP_DISABLE_PIP_VERSION_CHECK"] = "1"
 sys.path.append(str(Path.home() / ".local" / "bin"))
 
 import cmd2
-from cmd2.ansi import style
+from .styling import style
 
 def cluge_package_imports(name, package):
     if name == "__main__" and package is None:
@@ -121,20 +121,26 @@ class ReconShell(cmd2.Cmd):
         self.register_postloop_hook(self._postloop_hook)
 
     def _initialize_parsers(self):
-        db_list_parser.set_defaults(func=self.database_list)
-        db_attach_parser.set_defaults(func=self.database_attach)
-        db_detach_parser.set_defaults(func=self.database_detach)
-        db_delete_parser.set_defaults(func=self.database_delete)
-        endpoint_results_parser.set_defaults(func=self.print_endpoint_results)
-        target_results_parser.set_defaults(func=self.print_target_results)
-        nmap_results_parser.set_defaults(func=self.print_nmap_results)
-        technology_results_parser.set_defaults(func=self.print_webanalyze_results)
-        searchsploit_results_parser.set_defaults(func=self.print_searchsploit_results)
-        port_results_parser.set_defaults(func=self.print_port_results)
-        tools_install_parser.set_defaults(func=self.tools_install)
-        tools_reinstall_parser.set_defaults(func=self.tools_reinstall)
-        tools_uninstall_parser.set_defaults(func=self.tools_uninstall)
-        tools_list_parser.set_defaults(func=self.tools_list)
+        # Store the *name* of the handler method (a string) rather than a bound
+        # method.  cmd2 2.x/3.x deep-copies the parser on every command
+        # invocation; a bound-method default would drag the whole shell (and its
+        # open file handles/threads) through copy.deepcopy and raise.  Strings
+        # copy trivially, so we resolve the handler via getattr() at dispatch
+        # time in do_database/do_tools/do_view.
+        db_list_parser.set_defaults(func="database_list")
+        db_attach_parser.set_defaults(func="database_attach")
+        db_detach_parser.set_defaults(func="database_detach")
+        db_delete_parser.set_defaults(func="database_delete")
+        endpoint_results_parser.set_defaults(func="print_endpoint_results")
+        target_results_parser.set_defaults(func="print_target_results")
+        nmap_results_parser.set_defaults(func="print_nmap_results")
+        technology_results_parser.set_defaults(func="print_webanalyze_results")
+        searchsploit_results_parser.set_defaults(func="print_searchsploit_results")
+        port_results_parser.set_defaults(func="print_port_results")
+        tools_install_parser.set_defaults(func="tools_install")
+        tools_reinstall_parser.set_defaults(func="tools_reinstall")
+        tools_uninstall_parser.set_defaults(func="tools_uninstall")
+        tools_list_parser.set_defaults(func="tools_list")
 
     def _preloop_hook(self):
         self.selectorloop = SelectorThread(daemon=True)
@@ -224,15 +230,18 @@ class ReconShell(cmd2.Cmd):
             return self.poutput(
                 style(f"[!] {args.scantype} or one of its dependencies is not installed", fg="bright_red")
             )
+        # cmd2 2.x exposes the parsed Statement via the cmd2_statement wrapper
+        # rather than the old __statement__ attribute.
+        statement = args.cmd2_statement.get()
         tgt_file_path = None
         if args.target:
             tgt_file_fd, tgt_file_path = tempfile.mkstemp()
             tgt_file_path = Path(tgt_file_path)
-            tgt_idx = args.__statement__.arg_list.index("--target")
+            tgt_idx = statement.arg_list.index("--target")
             tgt_file_path.write_text(args.target)
-            args.__statement__.arg_list[tgt_idx + 1] = str(tgt_file_path)
-            args.__statement__.arg_list[tgt_idx] = "--target-file"
-        command.extend(args.__statement__.arg_list)
+            statement.arg_list[tgt_idx + 1] = str(tgt_file_path)
+            statement.arg_list[tgt_idx] = "--target-file"
+        command.extend(statement.arg_list)
         command.extend(["--db-location", str(self.db_mgr.location)])
         if args.sausage:
             command.pop(command.index("--sausage"))
@@ -345,7 +354,7 @@ class ReconShell(cmd2.Cmd):
     def do_tools(self, args):
         func = getattr(args, "func", None)
         if func is not None:
-            func(args)
+            getattr(self, func)(args)
         else:
             self.do_help("tools")
 
@@ -451,7 +460,7 @@ class ReconShell(cmd2.Cmd):
     def do_database(self, args):
         func = getattr(args, "func", None)
         if func is not None:
-            func(args)
+            getattr(self, func)(args)
         else:
             self.do_help("database")
 
@@ -608,11 +617,12 @@ class ReconShell(cmd2.Cmd):
 
     @cmd2.with_argparser(view_parser)
     def do_view(self, args):
+        """View results of completed scans"""
         if self.db_mgr is None:
             return self.poutput(style("[!] you are not connected to a database", fg="bright_magenta"))
         func = getattr(args, "func", None)
         if func is not None:
-            func(args)
+            getattr(self, func)(args)
         else:
             self.do_help("view")
 

@@ -4,7 +4,7 @@ import pkgutil
 import importlib
 import ipaddress
 from pathlib import Path
-from cmd2.ansi import style
+from ..styling import style
 
 from collections import defaultdict
 
