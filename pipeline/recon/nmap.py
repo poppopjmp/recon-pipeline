@@ -4,7 +4,7 @@ import subprocess
 import concurrent.futures
 from pathlib import Path
 from shutil import which
-from cmd2.ansi import style
+from ..styling import style
 
 import luigi
 import sqlalchemy
@@ -28,7 +28,7 @@ from ..models.searchsploit_model import SearchsploitResult
 
 @inherits(ParseMasscanOutput)
 class ThreadedNmapScan(luigi.Task):
-    """ Run ``nmap`` against specific targets and ports gained from the ParseMasscanOutput Task.
+    """Run ``nmap`` against specific targets and ports gained from the ParseMasscanOutput Task.
 
     Install:
         ``nmap`` is already on your system if you're using kali.  If you're not using kali, refer to your own
@@ -65,7 +65,7 @@ class ThreadedNmapScan(luigi.Task):
         self.results_subfolder = (Path(self.results_dir) / "nmap-results").expanduser().resolve()
 
     def requires(self):
-        """ ThreadedNmap depends on ParseMasscanOutput to run.
+        """ThreadedNmap depends on ParseMasscanOutput to run.
 
         TargetList expects target_file, results_dir, and db_location as parameters.
         Masscan expects rate, target_file, interface, and either ports or top_ports as parameters.
@@ -85,7 +85,7 @@ class ThreadedNmapScan(luigi.Task):
         return ParseMasscanOutput(**args)
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Naming convention for the output folder is TARGET_FILE-nmap-results.
 
@@ -104,7 +104,7 @@ class ThreadedNmapScan(luigi.Task):
         }
 
     def parse_nmap_output(self):
-        """ Read nmap .xml results and add entries into specified database """
+        """Read nmap .xml results and add entries into specified database"""
 
         for entry in self.results_subfolder.glob("nmap*.xml"):
             # relying on python-libnmap here
@@ -160,7 +160,7 @@ class ThreadedNmapScan(luigi.Task):
         self.db_mgr.close()
 
     def run(self):
-        """ Parses pickled target info dictionary and runs targeted nmap scans against only open ports. """
+        """Parses pickled target info dictionary and runs targeted nmap scans against only open ports."""
         try:
             self.threads = abs(int(self.threads))
         except (TypeError, ValueError):
@@ -214,7 +214,7 @@ class ThreadedNmapScan(luigi.Task):
 
 @inherits(ThreadedNmapScan)
 class SearchsploitScan(luigi.Task):
-    """ Run ``searchcploit`` against each ``nmap*.xml`` file in the **TARGET-nmap-results** directory and write results to disk.
+    """Run ``searchcploit`` against each ``nmap*.xml`` file in the **TARGET-nmap-results** directory and write results to disk.
 
     Install:
         ``searchcploit`` is already on your system if you're using kali.  If you're not using kali, refer to your own
@@ -249,7 +249,7 @@ class SearchsploitScan(luigi.Task):
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
 
     def requires(self):
-        """ Searchsploit depends on ThreadedNmap to run.
+        """Searchsploit depends on ThreadedNmap to run.
 
         TargetList expects target_file, results_dir, and db_location as parameters.
         Masscan expects rate, target_file, interface, and either ports or top_ports as parameters.
@@ -272,7 +272,7 @@ class SearchsploitScan(luigi.Task):
         return ThreadedNmapScan(**args)
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Naming convention for the output folder is TARGET_FILE-searchsploit-results.
 
@@ -287,7 +287,7 @@ class SearchsploitScan(luigi.Task):
         )
 
     def run(self):
-        """ Grabs the xml files created by ThreadedNmap and runs searchsploit --nmap on each one, saving the output. """
+        """Grabs the xml files created by ThreadedNmap and runs searchsploit --nmap on each one, saving the output."""
         for entry in Path(self.input().get("localtarget").path).glob("nmap*.xml"):
             proc = subprocess.run(
                 [tools.get("searchsploit").get("path"), "-j", "-v", "--nmap", str(entry)], stdout=subprocess.PIPE

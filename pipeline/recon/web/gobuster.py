@@ -20,7 +20,7 @@ from ..helpers import get_ip_address_version, is_ip_address
 
 @inherits(GatherWebTargets)
 class GobusterScan(luigi.Task):
-    """ Use ``gobuster`` to perform forced browsing.
+    """Use ``gobuster`` to perform forced browsing.
 
     Install:
         .. code-block:: console
@@ -68,7 +68,7 @@ class GobusterScan(luigi.Task):
         self.results_subfolder = Path(self.results_dir) / "gobuster-results"
 
     def requires(self):
-        """ GobusterScan depends on GatherWebTargets to run.
+        """GobusterScan depends on GatherWebTargets to run.
 
         GatherWebTargets accepts exempt_list and expects rate, target_file, interface,
                          and either ports or top_ports as parameters
@@ -90,7 +90,7 @@ class GobusterScan(luigi.Task):
         return GatherWebTargets(**args)
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         If recursion is disabled, the naming convention for the output file is gobuster.TARGET_FILE.txt
         Otherwise the output file is recursive-gobuster_TARGET_FILE.log
@@ -105,7 +105,7 @@ class GobusterScan(luigi.Task):
         )
 
     def parse_results(self):
-        """ Reads in each individual gobuster file and adds each line to the database as an Endpoint """
+        """Reads in each individual gobuster file and adds each line to the database as an Endpoint"""
         for file in self.results_subfolder.iterdir():
             tgt = None
             for i, line in enumerate(file.read_text().splitlines()):
@@ -126,7 +126,7 @@ class GobusterScan(luigi.Task):
                     self.output().touch()
 
     def run(self):
-        """ Defines the options/arguments sent to gobuster after processing.
+        """Defines the options/arguments sent to gobuster after processing.
 
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run

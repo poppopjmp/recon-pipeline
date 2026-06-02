@@ -12,10 +12,10 @@ header_association_table = Table(
 
 
 class Header(Base):
-    """ Database model that describes an http header (i.e. Server=cloudflare).
+    """Database model that describes an http header (i.e. Server=cloudflare).
 
-        Relationships:
-            ``endpoints``: many to many -> :class:`pipeline.models.target_model.Endpoint`
+    Relationships:
+        ``endpoints``: many to many -> :class:`pipeline.models.target_model.Endpoint`
     """
 
     __tablename__ = "header"

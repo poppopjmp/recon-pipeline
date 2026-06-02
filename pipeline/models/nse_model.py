@@ -12,12 +12,12 @@ nse_result_association_table = Table(
 
 
 class NSEResult(Base):
-    """ Database model that describes the NSE script executions as part of an nmap scan.
+    """Database model that describes the NSE script executions as part of an nmap scan.
 
-        Represents NSE script data.
+    Represents NSE script data.
 
-        Relationships:
-            ``NmapResult``: many to many -> :class:`pipeline.models.nmap_model.NmapResult`
+    Relationships:
+        ``NmapResult``: many to many -> :class:`pipeline.models.nmap_model.NmapResult`
     """
 
     __tablename__ = "nse_result"

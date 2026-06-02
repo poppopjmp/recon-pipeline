@@ -5,12 +5,12 @@ from .base_model import Base
 
 
 class IPAddress(Base):
-    """ Database model that describes an ip address (ipv4 or ipv6).
+    """Database model that describes an ip address (ipv4 or ipv6).
 
-        Represents amass data or targets specified manually as part of the ``target-file``.
+    Represents amass data or targets specified manually as part of the ``target-file``.
 
-        Relationships:
-            ``target``: many to one -> :class:`pipeline.models.target_model.Target`
+    Relationships:
+        ``target``: many to one -> :class:`pipeline.models.target_model.Target`
     """
 
     __tablename__ = "ip_address"

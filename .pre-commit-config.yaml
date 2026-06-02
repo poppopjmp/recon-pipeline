@@ -1,24 +1,20 @@
 repos:
--   repo: https://github.com/ambv/black
-    rev: stable
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
     hooks:
-    - id: black
-      args: ['pipeline', 'tests/test_web', 'tests/test_recon', 'tests/test_shell', 'tests/test_models', 'tests/test_tools_install']
--   repo: https://gitlab.com/pycqa/flake8
-    rev: 3.7.9
+      - id: black
+        args: ["-l", "120"]
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1
     hooks:
-    - id: flake8
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.5.0  # Use the ref you want to point at
+      - id: flake8
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: debug-statements
--   repo: local
-    hooks:
-    - id: tests
-      pass_filenames: false
-      name: run tests
-      entry: python
-      language: system
-      types: [python]
-      args: ['-m', 'pytest', 'tests/test_web', 'tests/test_recon', 'tests/test_shell', 'tests/test_models']
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: debug-statements
+      - id: check-yaml
+        # the pipeline/tools/*.yaml files use custom tags (!join, !get_default,
+        # ...) that safe_load rejects; --unsafe checks syntax only.
+        args: ["--unsafe"]

@@ -424,15 +424,17 @@ class TestReconShell:
         attrs = {"communicate.return_value": (b"output", b"error"), "returncode": 0}
         process_mock.configure_mock(**attrs)
 
-        with patch("subprocess.run", autospec=True) as mocked_popen, patch(
-            "webbrowser.open", autospec=True
-        ) as mocked_web, patch("selectors.DefaultSelector.register", autospec=True) as mocked_selector, patch(
-            "cmd2.Cmd.select"
-        ) as mocked_select, patch(
-            "pipeline.recon-pipeline.get_scans"
-        ) as mocked_scans:
+        with (
+            patch("subprocess.run", autospec=True) as mocked_run,
+            patch("subprocess.Popen", autospec=True) as mocked_popen,
+            patch("webbrowser.open", autospec=True) as mocked_web,
+            patch("selectors.DefaultSelector.register", autospec=True) as mocked_selector,
+            patch("cmd2.Cmd.select") as mocked_select,
+            patch.object(recon_shell, "get_scans") as mocked_scans,
+        ):
 
             mocked_select.return_value = "Resume"
+            mocked_run.return_value = process_mock
             mocked_popen.return_value = process_mock
 
             test_input += f" --results-dir {tmp_path / 'mostuff'}"
@@ -457,13 +459,20 @@ class TestReconShell:
         assert len(sys.path) > pathlen
 
     def test_main(self):
-        with patch("cmd2.Cmd.cmdloop") as mocked_loop, patch("sys.exit"), patch("cmd2.Cmd.select") as mocked_select:
+        # autospec so the mocks are spec'd to the real methods; otherwise cmd2's
+        # init-time subcommand introspection treats a bare MagicMock (which
+        # answers hasattr() for anything) as a subcommand and raises.
+        with (
+            patch("cmd2.Cmd.cmdloop", autospec=True) as mocked_loop,
+            patch("sys.exit"),
+            patch("cmd2.Cmd.select", autospec=True) as mocked_select,
+        ):
             mocked_select.return_value = "No"
             recon_shell.main(name="__main__")
             assert mocked_loop.called
 
     @pytest.mark.parametrize("test_input", ["Yes", "No"])
-    def test_remove_old_recon_tools(self, test_input, tmp_path):
+    def test_remove_old_recon_tools(self, test_input, tmp_path, monkeypatch):
         tooldict = tmp_path / ".tool-dict.pkl"
         tooldir = tmp_path / ".recon-tools"
         searchsploit_rc = tmp_path / ".searchsploit_rc"
@@ -481,15 +490,20 @@ class TestReconShell:
 
         subfile.touch()
         assert subfile.exists()
-        old_loop = recon_shell.ReconShell.cmdloop
 
-        recon_shell.ReconShell.cmdloop = MagicMock()
-        recon_shell.cmd2.Cmd.select = MagicMock(return_value=test_input)
+        # Patch via monkeypatch so the originals are restored even if an
+        # assertion below fails; otherwise a leaked MagicMock on the class
+        # breaks cmd2's init-time subcommand introspection in later tests.
+        # spec the mocks so cmd2's init-time subcommand introspection skips them
+        # (a bare MagicMock answers hasattr() for anything and trips it up).
+        monkeypatch.setattr(recon_shell.ReconShell, "cmdloop", MagicMock(spec=lambda *a, **k: None))
+        select_mock = MagicMock(spec=lambda *a, **k: None)
+        select_mock.return_value = test_input
+        monkeypatch.setattr(recon_shell.cmd2.Cmd, "select", select_mock)
         with patch("sys.exit"):
             recon_shell.main(
                 name="__main__", old_tools_dir=tooldir, old_tools_dict=tooldict, old_searchsploit_rc=searchsploit_rc
             )
-        recon_shell.ReconShell.cmdloop = old_loop
         for file in [subfile, tooldir, tooldict, searchsploit_rc]:
             if test_input == "Yes":
                 assert not file.exists()
@@ -499,13 +513,13 @@ class TestReconShell:
     @pytest.mark.parametrize(
         "test_input", [("1", "Resume", True, 1), ("2", "Remove", False, 0), ("3", "Save", False, 1)]
     )
-    def test_check_scan_directory(self, test_input, tmp_path):
+    def test_check_scan_directory(self, test_input, tmp_path, monkeypatch):
         user_input, answer, exists, numdirs = test_input
 
         new_tmp = tmp_path / f"check_scan_directory_test-{user_input}-{answer}"
         new_tmp.mkdir()
 
-        recon_shell.cmd2.Cmd.select = MagicMock(return_value=answer)
+        monkeypatch.setattr(recon_shell.cmd2.Cmd, "select", MagicMock(return_value=answer))
 
         print(list(tmp_path.iterdir()), new_tmp)
         self.shell.check_scan_directory(str(new_tmp))

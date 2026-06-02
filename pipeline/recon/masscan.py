@@ -20,7 +20,7 @@ from .config import top_tcp_ports, top_udp_ports, defaults, web_ports
 
 @inherits(TargetList, ParseAmassOutput)
 class MasscanScan(luigi.Task):
-    """ Run ``masscan`` against a target specified via the TargetList Task.
+    """Run ``masscan`` against a target specified via the TargetList Task.
 
     Note:
         When specified, ``--top_ports`` is processed and then ultimately passed to ``--ports``.
@@ -67,7 +67,7 @@ class MasscanScan(luigi.Task):
         self.results_subfolder = (Path(self.results_dir) / "masscan-results").expanduser().resolve()
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Naming convention for the output file is masscan.TARGET_FILE.json.
 
@@ -79,7 +79,7 @@ class MasscanScan(luigi.Task):
         return luigi.LocalTarget(new_path.expanduser().resolve())
 
     def run(self):
-        """ Defines the options/arguments sent to masscan after processing.
+        """Defines the options/arguments sent to masscan after processing.
 
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
@@ -150,7 +150,7 @@ class MasscanScan(luigi.Task):
 
 @inherits(MasscanScan)
 class ParseMasscanOutput(luigi.Task):
-    """ Read masscan JSON results and create a pickled dictionary of pertinent information for processing.
+    """Read masscan JSON results and create a pickled dictionary of pertinent information for processing.
 
     Args:
         top_ports: Scan top N most popular ports *Required by upstream Task*
@@ -168,7 +168,7 @@ class ParseMasscanOutput(luigi.Task):
         self.results_subfolder = (Path(self.results_dir) / "masscan-results").expanduser().resolve()
 
     def requires(self):
-        """ ParseMasscanOutput depends on Masscan to run.
+        """ParseMasscanOutput depends on Masscan to run.
 
         Masscan expects rate, target_file, interface, and either ports or top_ports as parameters.
 
@@ -187,7 +187,7 @@ class ParseMasscanOutput(luigi.Task):
         return MasscanScan(**args)
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Naming convention for the output file is masscan.TARGET_FILE.parsed.pickle.
 
@@ -199,7 +199,7 @@ class ParseMasscanOutput(luigi.Task):
         )
 
     def run(self):
-        """ Reads masscan JSON results and creates a pickled dictionary of pertinent information for processing. """
+        """Reads masscan JSON results and creates a pickled dictionary of pertinent information for processing."""
         try:
             # load masscan results from Masscan Task
             entries = json.load(self.input().open())

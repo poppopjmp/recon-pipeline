@@ -7,7 +7,6 @@ import luigi
 
 from pipeline.recon import AmassScan, ParseAmassOutput, TargetList
 
-
 amass_json = Path(__file__).parent.parent / "data" / "recon-results" / "amass-results" / "amass.json"
 
 

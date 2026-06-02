@@ -10,7 +10,7 @@ from ..models.target_model import Target
 
 
 class TargetList(luigi.ExternalTask):
-    """ External task.  ``TARGET_FILE`` is generated manually by the user from target's scope.
+    """External task.  ``TARGET_FILE`` is generated manually by the user from target's scope.
 
     Args:
         results_dir: specifies the directory on disk to which all Task results are written
@@ -26,7 +26,7 @@ class TargetList(luigi.ExternalTask):
         self.db_mgr = pipeline.models.db_manager.DBManager(db_location=self.db_location)
 
     def output(self):
-        """ Returns the target output for this task. target_file.ips || target_file.domains
+        """Returns the target output for this task. target_file.ips || target_file.domains
 
         In this case, it expects a file to be present in the local filesystem.
         By convention, TARGET_NAME should be something like tesla or some other

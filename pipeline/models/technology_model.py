@@ -3,7 +3,6 @@ from sqlalchemy import Column, Integer, ForeignKey, String, Table, UniqueConstra
 
 from .base_model import Base
 
-
 technology_association_table = Table(
     "technology_association",
     Base.metadata,
@@ -13,12 +12,12 @@ technology_association_table = Table(
 
 
 class Technology(Base):
-    """ Database model that describes a web technology (i.e. Nginx 1.14).
+    """Database model that describes a web technology (i.e. Nginx 1.14).
 
-        Represents webanalyze data.
+    Represents webanalyze data.
 
-        Relationships:
-            ``targets``: many to many -> :class:`pipeline.models.target_model.Target`
+    Relationships:
+        ``targets``: many to many -> :class:`pipeline.models.target_model.Target`
     """
 
     __tablename__ = "technology"

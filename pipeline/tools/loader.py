@@ -12,37 +12,37 @@ tools = {}
 
 
 def join(loader, node):
-    """ yaml tag handler to join a sequence of items into a space-separated string at load time """
+    """yaml tag handler to join a sequence of items into a space-separated string at load time"""
     seq = loader.construct_sequence(node)
     return " ".join([str(val) for val in seq])
 
 
 def join_empty(loader, node):
-    """ yaml tag handler to join a sequence of items into a single string with no separations """
+    """yaml tag handler to join a sequence of items into a single string with no separations"""
     seq = loader.construct_sequence(node)
     return "".join([str(val) for val in seq])
 
 
 def join_path(loader, node):
-    """ yaml tag handler to join a sequence of items into a filesystem path at load time """
+    """yaml tag handler to join a sequence of items into a filesystem path at load time"""
     seq = loader.construct_sequence(node)
     return "/".join([str(i) for i in seq])
 
 
 def get_default(loader, node):
-    """ yaml tag handler to access defaults dict at load time """
+    """yaml tag handler to access defaults dict at load time"""
     py_str = loader.construct_python_str(node)
     return py_str.format(**defaults)
 
 
 def get_tool_path(loader, node):
-    """ yaml tag handler to access tools dict at load time """
+    """yaml tag handler to access tools dict at load time"""
     py_str = loader.construct_python_str(node)
     return py_str.format(**tools)
 
 
 def get_go_version(loader=None, node=None):
-    """ download latest version of golang """
+    """download latest version of golang"""
     arch = defaults.get("arch")
     err_msg = "Could not find latest go version download url"
 

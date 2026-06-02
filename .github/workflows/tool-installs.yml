@@ -1,0 +1,26 @@
+name: tool installs (network)
+
+# These tests install real third-party tools over the network and are slow and
+# inherently flaky, so they are kept out of the PR gate and run on demand or on
+# a weekly schedule instead.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays at 06:00 UTC
+
+jobs:
+  test-unmocked-tool-installs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Test tool installs
+        run: python -m pytest -vv --show-capture=all tests/test_tools_install

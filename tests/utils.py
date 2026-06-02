@@ -5,7 +5,7 @@ from cmd2.utils import StdSim
 
 
 def normalize(block):
-    """ Normalize a block of text to perform comparison.
+    """Normalize a block of text to perform comparison.
     Strip newlines from the very beginning and very end  Then split into separate lines and strip trailing whitespace
     from each line.
     """
@@ -15,7 +15,7 @@ def normalize(block):
 
 
 def run_cmd(app, cmd):
-    """ Clear out and err StdSim buffers, run the command, and return out and err """
+    """Clear out and err StdSim buffers, run the command, and return out and err"""
     saved_sysout = sys.stdout
     sys.stdout = app.stdout
 

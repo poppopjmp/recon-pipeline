@@ -6,7 +6,7 @@ from .header_model import header_association_table
 
 
 class Endpoint(Base):
-    """ Database model that describes a URL/endpoint.
+    """Database model that describes a URL/endpoint.
 
     Represents gobuster data.
 

@@ -16,7 +16,7 @@ from .targets import GatherWebTargets
 
 @inherits(GatherWebTargets)
 class TKOSubsScan(luigi.Task):
-    """ Use ``tko-subs`` to scan for potential subdomain takeovers.
+    """Use ``tko-subs`` to scan for potential subdomain takeovers.
 
     Install:
         .. code-block:: console
@@ -57,7 +57,7 @@ class TKOSubsScan(luigi.Task):
         self.output_file = self.results_subfolder / "tkosubs.csv"
 
     def requires(self):
-        """ TKOSubsScan depends on GatherWebTargets to run.
+        """TKOSubsScan depends on GatherWebTargets to run.
 
         GatherWebTargets accepts exempt_list and expects rate, target_file, interface,
                          and either ports or top_ports as parameters
@@ -79,7 +79,7 @@ class TKOSubsScan(luigi.Task):
         return GatherWebTargets(**args)
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Returns:
             luigi.contrib.sqla.SQLAlchemyTarget
@@ -89,7 +89,7 @@ class TKOSubsScan(luigi.Task):
         )
 
     def parse_results(self):
-        """ Reads in the tkosubs .csv file and updates the associated Target record. """
+        """Reads in the tkosubs .csv file and updates the associated Target record."""
         with open(self.output_file, newline="") as f:
             reader = csv.reader(f)
 
@@ -113,7 +113,7 @@ class TKOSubsScan(luigi.Task):
         self.output().touch()
 
     def run(self):
-        """ Defines the options/arguments sent to tko-subs after processing.
+        """Defines the options/arguments sent to tko-subs after processing.
 
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run
@@ -139,7 +139,7 @@ class TKOSubsScan(luigi.Task):
 
 @inherits(GatherWebTargets)
 class SubjackScan(luigi.Task):
-    """ Use ``subjack`` to scan for potential subdomain takeovers.
+    """Use ``subjack`` to scan for potential subdomain takeovers.
 
     Install:
         .. code-block:: console
@@ -182,7 +182,7 @@ class SubjackScan(luigi.Task):
         self.output_file = self.results_subfolder / "subjack.txt"
 
     def requires(self):
-        """ SubjackScan depends on GatherWebTargets to run.
+        """SubjackScan depends on GatherWebTargets to run.
 
         GatherWebTargets accepts exempt_list and expects rate, target_file, interface,
                          and either ports or top_ports as parameters
@@ -204,7 +204,7 @@ class SubjackScan(luigi.Task):
         return GatherWebTargets(**args)
 
     def output(self):
-        """ Returns the target output for this task.
+        """Returns the target output for this task.
 
         Returns:
             luigi.contrib.sqla.SQLAlchemyTarget
@@ -214,15 +214,15 @@ class SubjackScan(luigi.Task):
         )
 
     def parse_results(self):
-        """ Reads in the subjack's subjack.txt file and updates the associated Target record. """
+        """Reads in the subjack's subjack.txt file and updates the associated Target record."""
 
         with open(self.output_file) as f:
-            """ example data
+            """example data
 
-                [Not Vulnerable] 52.53.92.161:443
-                [Not Vulnerable] 13.57.162.100
-                [Not Vulnerable] 2606:4700:10::6814:3d33
-                [Not Vulnerable] assetinventory.bugcrowd.com
+            [Not Vulnerable] 52.53.92.161:443
+            [Not Vulnerable] 13.57.162.100
+            [Not Vulnerable] 2606:4700:10::6814:3d33
+            [Not Vulnerable] assetinventory.bugcrowd.com
             """
             for line in f:
                 match = re.match(r"\[(?P<vuln_status>.+)] (?P<ip_or_hostname>.*)", line)
@@ -252,7 +252,7 @@ class SubjackScan(luigi.Task):
         self.output().touch()
 
     def run(self):
-        """ Defines the options/arguments sent to subjack after processing.
+        """Defines the options/arguments sent to subjack after processing.
 
         Returns:
             list: list of options/arguments, beginning with the name of the executable to run

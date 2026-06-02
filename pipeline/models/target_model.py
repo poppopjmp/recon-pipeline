@@ -7,7 +7,7 @@ from .technology_model import technology_association_table
 
 
 class Target(Base):
-    """ Database model that describes a target; This is the model that functions as the "top" model.
+    """Database model that describes a target; This is the model that functions as the "top" model.
 
     Relationships:
         ``ip_addresses``: one to many -> :class:`pipeline.models.ip_address_model.IPAddress`

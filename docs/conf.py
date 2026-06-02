@@ -20,16 +20,14 @@ sys.path.insert(0, os.path.abspath(".."))
 # -- Project information -----------------------------------------------------
 
 project = "recon-pipeline"
-copyright = "2020, epi"
-author = "epi"
+copyright = "2019-2026, epi052 and poppopjmp"
+author = "epi052, poppopjmp"
 
 # The full version, including alpha/beta/rc tags
-release = "0.7.3"
+release = "1.0.0"
 rst_epilog = """
 .. |version| replace:: {versionnum}
-""".format(
-    versionnum=release
-)
+""".format(versionnum=release)
 
 master_doc = "index"
 

@@ -10,18 +10,18 @@ from .nse_model import nse_result_association_table
 
 
 class NmapResult(Base):
-    """ Database model that describes the TARGET.nmap scan results.
+    """Database model that describes the TARGET.nmap scan results.
 
-        Represents nmap data.
+    Represents nmap data.
 
-        Relationships:
-            ``target``: many to one -> :class:`pipeline.models.target_model.Target`
+    Relationships:
+        ``target``: many to one -> :class:`pipeline.models.target_model.Target`
 
-            ``ip_address``: one to one -> :class:`pipeline.models.ip_address_model.IPAddress`
+        ``ip_address``: one to one -> :class:`pipeline.models.ip_address_model.IPAddress`
 
-            ``port``: one to one -> :class:`pipeline.models.port_model.Port`
+        ``port``: one to one -> :class:`pipeline.models.port_model.Port`
 
-            ``nse_results``: one to many -> :class:`pipeline.models.nse_model.NSEResult`
+        ``nse_results``: one to many -> :class:`pipeline.models.nse_model.NSEResult`
     """
 
     def __str__(self):

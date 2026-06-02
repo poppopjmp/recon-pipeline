@@ -1,4 +1,74 @@
+[build-system]
+requires = ["setuptools>=77.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "recon-pipeline"
+version = "1.0.0"
+description = "An automated target reconnaissance pipeline."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "poppopjmp" }]
+keywords = ["recon", "reconnaissance", "security", "pentest", "bugbounty", "luigi"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Security",
+]
+
+# Core runtime dependencies.  SQLAlchemy is pinned to the 1.4 series because
+# luigi.contrib.sqla (used by the pipeline's SQLAlchemyTarget tasks) is not
+# compatible with SQLAlchemy 2.0.  cmd2 is pinned to 2.x because 3.x rewrote
+# its output/styling layer on top of rich.
+dependencies = [
+    "cmd2>=2.4,<3",
+    "luigi>=3.4",
+    "SQLAlchemy>=1.4,<2.0",
+    "python-libnmap>=0.7.3",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "coverage>=7.0",
+    "black>=24.0",
+    "flake8>=6.0",
+    "pre-commit>=3.0",
+]
+docs = [
+    "sphinx>=7.0",
+    "sphinx-argparse>=0.4",
+    "sphinx-rtd-theme>=2.0",
+]
+
+[project.scripts]
+recon-pipeline = "pipeline.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/poppopjmp/recon-pipeline"
+Repository = "https://github.com/poppopjmp/recon-pipeline"
+Issues = "https://github.com/poppopjmp/recon-pipeline/issues"
+
+[tool.setuptools.packages.find]
+include = ["pipeline*"]
+
+[tool.setuptools.package-data]
+# recon-pipeline.py has a hyphen so it is not importable as a normal module;
+# ship it (and the tool definition YAMLs) as package data.
+pipeline = ["recon-pipeline.py", "tools/*.yaml"]
+
 [tool.black]
 line-length = 120
 include = '\.pyi?$'
 exclude = '.*config.*py$|\.git'
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning:luigi.*:",
+]
