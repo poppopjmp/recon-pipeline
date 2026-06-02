@@ -1,10 +1,11 @@
 # Automated Reconnaissance Pipeline
 
 ![version](https://img.shields.io/github/v/release/poppopjmp/recon-pipeline?style=for-the-badge)
-![Python application](https://img.shields.io/github/workflow/status/poppopjmp/recon-pipeline/recon-pipeline%20build?style=for-the-badge)
-![code coverage](https://img.shields.io/badge/coverage-97%25-blue?style=for-the-badge)
-![python](https://img.shields.io/badge/python-3.7-informational?style=for-the-badge)
+![Python application](https://img.shields.io/github/actions/workflow/status/poppopjmp/recon-pipeline/pythonapp.yml?style=for-the-badge)
+![python](https://img.shields.io/badge/python-3.9%2B-informational?style=for-the-badge)
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)
+
+> This is a maintained fork of [epi052/recon-pipeline](https://github.com/epi052/recon-pipeline), updated to run on modern Python (3.9+) with current dependencies (luigi 3.x, cmd2 2.x, SQLAlchemy 1.4).
 
 There are an [accompanying set of blog posts](https://epi052.gitlab.io/notes-to-self/blog/2019-09-01-how-to-build-an-automated-recon-pipeline-with-python-and-luigi/) detailing the development process and underpinnings of the pipeline.  Feel free to check them out if you're so inclined, but they're in no way required reading to use the tool.
 
@@ -32,27 +33,27 @@ There are two primary phases for installation:
 1. prior to the python dependencies being installed
 2. everything else
 
-First, the manual steps to get dependencies installed in a virtual environment are as follows, starting with [pipenv](https://github.com/pypa/pipenv)
+### Recommended: pip (Python 3.9+)
 
-### Kali
 ```bash
-sudo apt update
-sudo apt install pipenv
+git clone https://github.com/poppopjmp/recon-pipeline.git
+cd recon-pipeline
+python3 -m venv .venv
+source .venv/bin/activate
+pip install .
+recon-pipeline
 ```
 
-### Ubuntu 18.04/20.04
+For development (editable install with test/lint tooling):
+
 ```bash
-sudo apt update
-sudo apt install python3-pip
-pip install --user pipenv
-echo "PATH=${PATH}:~/.local/bin" >> ~/.bashrc
-bash
+pip install -e ".[dev]"
 ```
 
-### Both OSs after pipenv install
+### Alternative: pipenv
 
 ```bash
-git clone https://github.com/epi052/recon-pipeline.git
+git clone https://github.com/poppopjmp/recon-pipeline.git
 cd recon-pipeline
 pipenv install
 pipenv shell
@@ -63,7 +64,7 @@ pipenv shell
 If you have Docker installed, you can run the recon-pipeline in a container with the following commands:
 
 ```bash
-git clone https://github.com/epi052/recon-pipeline.git
+git clone https://github.com/poppopjmp/recon-pipeline.git
 cd recon-pipeline
 docker build -t recon-pipeline .
 docker run -d \
@@ -81,7 +82,7 @@ The `recon-pipeline` should start in the background automatically after the `doc
 
 After installing the python dependencies, the `recon-pipeline` shell provides its own [tools](https://recon-pipeline.readthedocs.io/en/latest/api/commands.html#tools) command (seen below).  A simple `tools install all` will handle all additional installation steps.
 
-> Ubuntu Note (and newer kali versions):  You may consider running `sudo -v` prior to running `./recon-pipeline.py`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
+> Ubuntu Note (and newer kali versions):  You may consider running `sudo -v` prior to running `recon-pipeline`.  `sudo -v` will refresh your creds, and the underlying subprocess calls during installation won't prompt you for your password.  It'll work either way though.
 
 Individual tools may be installed by running `tools install TOOLNAME` where `TOOLNAME` is one of the known tools that make
 up the pipeline.
@@ -138,7 +139,7 @@ echo employeefeedback.tesla.com >> tesla-blacklist
 echo ir.tesla.com >> tesla-blacklist
 
 # drop into the interactive shell
-/root/PycharmProjects/recon-pipeline/pipeline/recon-pipeline.py
+recon-pipeline
 recon-pipeline>
 ```
 
@@ -271,7 +272,7 @@ The other option is to add `--local-scheduler` to your `scan` command from withi
 
 <!-- this section is a modified version of what's used by the awesome guys that wrote cmd2 -->
 
-If you think you've found a bug, please first read through the open [Issues](https://github.com/epi052/recon-pipeline/issues). If you're confident it's a new bug, go ahead and create a new GitHub issue. Be sure to include as much information as possible so we can reproduce the bug.  At a minimum, please state the following:
+If you think you've found a bug, please first read through the open [Issues](https://github.com/poppopjmp/recon-pipeline/issues). If you're confident it's a new bug, go ahead and create a new GitHub issue. Be sure to include as much information as possible so we can reproduce the bug.  At a minimum, please state the following:
 
 * ``recon-pipeline`` version
 * Python version

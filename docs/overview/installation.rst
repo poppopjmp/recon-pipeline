@@ -38,7 +38,7 @@ Both OSs After ``pipenv`` Install
 
 .. code-block:: console
 
-    git clone https://github.com/epi052/recon-pipeline.git
+    git clone https://github.com/poppopjmp/recon-pipeline.git
     cd recon-pipeline
     pipenv install
     pipenv shell
@@ -89,7 +89,7 @@ If you have Docker installed, you can run the recon-pipeline in a container with
 
 .. code-block:: console
 
-        git clone https://github.com/epi052/recon-pipeline.git
+        git clone https://github.com/poppopjmp/recon-pipeline.git
         cd recon-pipeline
         docker build -t recon-pipeline .
         docker run -d \

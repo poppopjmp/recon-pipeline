@@ -4,7 +4,7 @@
 
 First of all, thank you for contributing! Please follow these steps to contribute:
 
-1. Find an issue that needs assistance by searching for the [Help Wanted](https://github.com/epi052/recon-pipeline/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) tag
+1. Find an issue that needs assistance by searching for the [Help Wanted](https://github.com/poppopjmp/recon-pipeline/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) tag
 2. Let us know you're working on it by posting a comment on the issue
 3. Follow the [Contribution guidelines](#contribution-guidelines) to start working on the issue
 
@@ -42,7 +42,7 @@ Working on your first pull request? You can learn how from this *free* series
 
 #### Forking recon-pipeline
 
-1. Go to the top-level recon-pipeline repository: <https://github.com/epi052/recon-pipeline>
+1. Go to the top-level recon-pipeline repository: <https://github.com/poppopjmp/recon-pipeline>
 2. Click the "Fork" button in the upper right hand corner of the interface
 ([more details here](https://help.github.com/articles/fork-a-repo/))
 3. After the repository has been forked, you will be taken to your copy of the recon-pipeline repo at `your_username/recon-pipeline`
@@ -63,7 +63,7 @@ $ git clone https://github.com/your_username/recon-pipeline.git
 2. Add a remote to the official recon-pipeline repo:
 
 ```sh
-$ git remote add upstream https://github.com/epi052/recon-pipeline.git
+$ git remote add upstream https://github.com/poppopjmp/recon-pipeline.git
 ```
 
 Now you have a local copy of the recon-pipeline repo!

@@ -1,6 +1,6 @@
 # Landing a Pull Request (PR)
 
-Long form explanations of most of the items below can be found in the [CONTRIBUTING](https://github.com/epi052/recon-pipeline/blob/master/CONTRIBUTING.md) guide.
+Long form explanations of most of the items below can be found in the [CONTRIBUTING](https://github.com/poppopjmp/recon-pipeline/blob/main/CONTRIBUTING.md) guide.
 
 ## Branching checklist
 - [ ] There is an issue associated with your PR (bug, feature, etc.. if not, create one)

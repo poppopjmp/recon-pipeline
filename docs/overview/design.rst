@@ -52,12 +52,8 @@ The data flow and key processes in the recon-pipeline project are described belo
 Diagrams
 --------
 
-.. image:: architecture_diagram.png
-   :alt: Architecture Diagram
-   :align: center
-
-.. image:: data_flow_diagram.png
-   :alt: Data Flow Diagram
+.. image:: ../img/database-design.png
+   :alt: Database Design
    :align: center
 
 Guidelines for Improving the Codebase
