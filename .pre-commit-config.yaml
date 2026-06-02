@@ -15,3 +15,6 @@ repos:
       - id: end-of-file-fixer
       - id: debug-statements
       - id: check-yaml
+        # the pipeline/tools/*.yaml files use custom tags (!join, !get_default,
+        # ...) that safe_load rejects; --unsafe checks syntax only.
+        args: ["--unsafe"]

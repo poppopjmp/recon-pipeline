@@ -333,13 +333,13 @@ class TestUnmockedToolsInstall:
 
     def test_install_subjack(self):
         tool = "subjack"
-        url = "github.com/haccer/subjack"
+        url = "github.com/haccer/subjack@latest"
         tools_copy = tools.copy()
         tool_path = f"{self.shell.tools_dir}/mygo/bin/subjack"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} install {url}"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
         self.perform_add_remove(tools_copy, tool, True, False)
@@ -347,13 +347,13 @@ class TestUnmockedToolsInstall:
 
     def test_install_tkosubs(self):
         tool = "tko-subs"
-        url = "github.com/anshumanbh/tko-subs"
+        url = "github.com/anshumanbh/tko-subs@latest"
         tools_copy = tools.copy()
         tool_path = f"{self.shell.tools_dir}/mygo/bin/tko-subs"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} install {url}"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
         self.perform_add_remove(tools_copy, tool, True, False)
@@ -361,13 +361,13 @@ class TestUnmockedToolsInstall:
 
     def test_install_waybackurls(self):
         tool = "waybackurls"
-        url = "github.com/tomnomnom/waybackurls"
+        url = "github.com/tomnomnom/waybackurls@latest"
         tools_copy = tools.copy()
         tool_path = f"{self.shell.tools_dir}/mygo/bin/waybackurls"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} install {url}"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
         self.perform_add_remove(tools_copy, tool, True, False)
@@ -375,13 +375,13 @@ class TestUnmockedToolsInstall:
 
     def test_install_webanalyze(self):
         tool = "webanalyze"
-        url = "github.com/rverton/webanalyze/..."
+        url = "github.com/rverton/webanalyze@latest"
         tools_copy = tools.copy()
         tool_path = f"{self.shell.tools_dir}/mygo/bin/webanalyze"
 
         tools_copy.update(self.setup_go_test(tool, tools_copy))
 
-        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} get {url}"
+        tools_copy.get(tool).get("install_commands")[0] = f"{tools_copy.get('go').get('path')} install {url}"
         tools_copy.get(tool).get("uninstall_commands")[0] = f"rm {tool_path}"
 
         self.perform_add_remove(tools_copy, tool, True, False)
